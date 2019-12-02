@@ -1,12 +1,12 @@
 /* TODO:
 ** 1) Write a file for 10,000 strings
 ** 2) Read it bit by bit in the stream
-** 3) Создать поток, который будет дописывать файл
-** 4) Трансформ потока, один на апперкейз вводимых данных,
+** 3) Create a stream that will append the file
+** 4) Transform streams, one  - to transform input strings into uppercase,
 **      next one - to delete numbers,
-**      next - to update the text, the first letter should be up case, other characters - lower case
-** 5) Создайте поток внутри второго трансформа в котором вы будете записывать удаленные цифры
-**      в отдельный файл также потоком и дополнительно новые данные, дату внесения, имя, фамилию и звание.
+**      next - to update the text, the first letter should be uppercase, other characters - into lowercase
+** 5) Create a stream inside the second transform, in which you will record deleted numbers in a new file also
+**      in the stream and additionally new data: the date of entry, name, surname and rank.
  */
 
 // (01)
