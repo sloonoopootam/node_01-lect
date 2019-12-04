@@ -10,16 +10,16 @@
  */
 
 // ( 01 )
-// const fs = require('fs');
-// const file = fs.createWriteStream('./almost-big.file');
-//
-// for (let i = 0; i <= 1e+4; i++) {
-//     file.write('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed ' +
-//         'exercitation ullamco anim id est laborum.\n');
-// }
-//
-// file.end();
-//
+const fs = require('fs');
+const file = fs.createWriteStream('./almost-big.file');
+
+for (let i = 0; i <= 1e+4; i++) {
+    file.write('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed ' +
+        'exercitation ullamco anim id est laborum.\n');
+}
+
+file.end();
+
 // ( 02 )
 // const fs = require('fs');
 // const server = require('http').createServer();
@@ -38,18 +38,24 @@
 // const inoutStream = new Duplex({
 //     write(chunk, encoding, callback) {
 //         console.log(chunk.toString());
-//         fs.appendFileSync('./almost-big.file', chunk.toString());
+//         fs.appendFile('./almost-big.file', chunk.toString());
 //         callback();
 //     }
 // });
 //
 // process.stdin.pipe(inoutStream);
 //
-// ( 04 )
+// ( 04 ), ( 05 )
 // const {Transform} = require('stream');
 // const fs = require('fs');
 // const file1 = fs.createWriteStream('./main.file');
 // const file2 = fs.createWriteStream('./minor.file');
+//
+// const obj = {
+//     name: 'Watman',
+//     surname: 'Assasadd',
+//     rank: 'Stabsgefreiter'
+// };
 //
 // const upperCaseTr = new Transform({
 //     transform(chunk, encoding, callback) {
@@ -60,11 +66,22 @@
 //
 // const numberFreeTr = new Transform({
 //     transform(chunk, encoding, callback) {
-//         this.push(chunk.toString().replace(/[0-9]/g, ''));
-//         if (chunk.toString().replace(/[^0-9]/g, '').length > 0) {
-//             file2.write(`${chunk.toString().replace(/[^0-9]/g, '')} : ${new Date}, ` +
-//              `${this.firstname} ${this.lastname}, ${this.rank}`; // ( 05 )
+//         const str = chunk.toString();
+//         this.push(str.replace(/[0-9]/g, ''));
+//         if (str.replace(/[0-9]/g, '').length > 0) {
+//             file2.write(`${str.replace(/[^0-9]/g, '')} : ` +
+//                 `${new Date().toLocaleString()}, ${obj.name} ${obj.surname}, ${obj.rank}\n`)                // ( 05 )
 //         }
+//         callback();
+//     }
+// });
+//
+// const strFirstUpTr = new Transform({
+//     transform(chunk, encoding, callback) {
+//         const str = chunk.toString().replace(/[0-9]/g, '');
+//         const res = str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+//         this.push(res);
+//         file1.write(res);
 //         callback();
 //     }
 // });
@@ -72,19 +89,5 @@
 // process.stdin
 //     .pipe(upperCaseTr)
 //     .pipe(numberFreeTr)
-//     .pipe(process.stdout);
-//
-// (04 - 3)
-// const {Transform} = require('stream');
-//
-// const numberFirstUpTr = new Transform({
-//     transform(chunk, encoding, callback) {
-//         const str = chunk.toString().replace(/[0-9]/g, '');
-//         this.push(str.charAt(0).toUpperCase() + str.substr(1).toLowerCase());
-//         callback();
-//     }
-// });
-//
-// process.stdin
-//     .pipe(numberFirstUpTr)
+//     .pipe(strFirstUpTr)
 //     .pipe(process.stdout);
